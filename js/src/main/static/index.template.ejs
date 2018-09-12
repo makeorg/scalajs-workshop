@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="theme-color" content="#ffffff">
+    <meta charset="utf-8">
+    <title><%= htmlWebpackPlugin.options.metaTitle %></title>
+    <meta name="description" content="<%= htmlWebpackPlugin.options.metaDescription %>">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400i" rel="stylesheet">
+    <script language="javascript">
+        var configuration = {
+            "apiUrl": "<%= htmlWebpackPlugin.options.apiUrl %>"
+        }
+    </script>
+    <script language="javascript">
+        // polyfill for Object.assign
+        if (typeof Object.assign != 'function') {
+          // Must be writable: true, enumerable: false, configurable: true
+          Object.defineProperty(Object, "assign", {
+            value: function assign(target, varArgs) { // .length of function is 2
+              'use strict';
+              if (target == null) { // TypeError if undefined or null
+                throw new TypeError('Cannot convert undefined or null to object');
+              }
+
+              var to = Object(target);
+
+              for (var index = 1; index < arguments.length; index++) {
+                var nextSource = arguments[index];
+
+                if (nextSource != null) { // Skip over if undefined or null
+                  for (var nextKey in nextSource) {
+                    // Avoid bugs when hasOwnProperty is shadowed
+                    if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
+                      to[nextKey] = nextSource[nextKey];
+                    }
+                  }
+                }
+              }
+              return to;
+            },
+            writable: true,
+            configurable: true
+          });
+        }
+    </script>
+</head>
+<body>
+<div id="app">
+    <div class="spinner__sub-wrapper">
+      <style>html,body,#make-app{height:100%}.spinner__sub-wrapper{display:table;width:100%;height:100%}.spinner__wrapper{display:table-cell;vertical-align:middle}@keyframes ROTATE{0%{-moz-transform:rotate(0);-webkit-transform:rotate(0);-o-transform:rotate(0);transform:rotate(0)}100%{-moz-transform:rotate(360deg);-webkit-transform:rotate(360deg);-o-transform:rotate(360deg);transform:rotate(360deg)}}.spinner{display:block;text-align:center;line-height:0}.spinner__shape{position:relative;z-index:1;opacity:0.3;-moz-animation-name:ROTATE;-webkit-animation-name:ROTATE;-o-animation-name:ROTATE;animation-name:ROTATE;-moz-animation-timing-function:linear;-webkit-animation-timing-function:linear;-o-animation-timing-function:linear;animation-timing-function:linear;-moz-animation-duration:.5s;-webkit-animation-duration:.5s;-o-animation-duration:.5s;animation-duration:.5s;-moz-animation-iteration-count:infinite;-webkit-animation-iteration-count:infinite;-o-animation-iteration-count:infinite;animation-iteration-count:infinite}</style>
+      <div class="spinner__wrapper">
+        <span class="spinner">
+          <svg x="0" y="0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 66 66" height="40" width="40" class="spinner__shape" >
+            <linearGradient id="gradient">
+              <stop offset="0" style="stop-color:rgb(0,0,0);stop-opacity:0;"></stop>
+              <stop offset="1" style="stop-color:rgb(0,0,0);stop-opacity:1;"></stop>
+            </linearGradient>
+            <path fill="url(#gradient)"
+                  d="M0,33C0,14.8,14.8,0,33,0s33,14.8,33,33S51.2,66,33,66S0,51.2,0,33z M6,33c0,14.9,12.1,27,27,27s27-12.1,27-27 S47.9,6,33,6S6,18.1,6,33z"></path>
+          </svg>
+        </span>
+      </div>
+    </div>
+</div>
+</body>
+</html>
