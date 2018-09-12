@@ -1,0 +1,37 @@
+{
+  "errors": {
+    "required": "Ce champ est requis",
+    "email": "Email invalide",
+    "legalAgeLimit": "Vous devez avoir au moins 18 ans."
+  },
+  "header": {
+    "title1": "Adopte",
+    "title2": "un animal de compagnie"
+  },
+  "footer": {
+
+  },
+  "home": {
+    "title": "Super adoption de chats !",
+    "message": "Bonjour, %{name}. Bienvenue à cet atelier pour ScalaIO !",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur fermentum interdum dui. Quisque et metussuscipit, ornare dolor in, sodales sapien. Phasellus porta, magna et hendrerit tincidunt, risus elit iaculis augue, ut convallis augue lectus in diam. Duis faucibus eros quis euismod interdum. Nunc ex ligula, elementum et lacus eget, posuere placerat mi. Duis faucibus libero nec neque suscipit maximus. Quisque feugiat orci eu magna fringilla aliquam. Etiam luctus interdum erat, eu vulputate odio dapibus a. Praesent ac metus rhoncus dui fringilla hendrerit eu id dui. Sed eleifend odio eu lacinia ultrices. Quisque id faucibus quam. Pellentesque congue mi arcu, nec congue purus accumsan at. Ut eu nunc vel massa fermentum mattis. Ut ultricies neque sit amet nisi pulvinar maximus. Nullam pulvinar sollicitudin turpis in blandit."
+  },
+  "search": {
+    "title": "Résultats de recherche pour '%{text}'"
+  },
+  "tile": {
+    "age": "Age: %{age} ans"
+  },
+  "changeLanguage": "Traduire en anglais",
+  "details": {
+    "age": "Age: %{age} ans",
+    "adoptionForm": {
+      "name": "Nom",
+      "age": "Age",
+      "email": "Email",
+      "phone": "Tél",
+      "terms": "Accepter les conditions d'adoption",
+      "submit": "Adopter"
+    }
+  }
+}
