@@ -16,32 +16,57 @@
 
 package org.make.workshop.routes
 
+import japgolly.scalajs.react.React
 import japgolly.scalajs.react.component.Scala.Unmounted
 import japgolly.scalajs.react.extra.OnUnmount
 import japgolly.scalajs.react.extra.router.{
   BaseUrl,
   Resolution,
-  RouterConfigDsl
+  RouterConfigDsl,
+  RouterCtl
 }
 import japgolly.scalajs.react.vdom.html_<^._
-import org.make.workshop.components.Search
 import org.make.workshop.components.Search.SearchProps
+import org.make.workshop.components.header.Header
+import org.make.workshop.components.header.Header.HeaderProps
+import org.make.workshop.components.{Footer, Home, PetDetails, Search}
+import org.make.workshop.styles.LayoutStyles
+import scalacss.ScalaCssReact._
+import scalacss.internal.mutable.GlobalRegistry
 
 import scala.util.matching.Regex
 
-/*
- * TODO: implement routing logic, see https://github.com/japgolly/scalajs-react/blob/master/doc/ROUTER.md
- */
 object Router {
 
   sealed trait PetPages
+  case object HomePage extends PetPages
+  case class PetDetailsPage(id: String) extends PetPages
   case class SearchPage(text: String) extends PetPages
+
+  private def layout(c: RouterCtl[PetPages],
+                     r: Resolution[PetPages]): VdomElement = {
+    val layoutStyles = GlobalRegistry[LayoutStyles].get
+
+    React.Fragment(
+      <.div(
+        layoutStyles.appWrapper,
+        <.header(layoutStyles.headerWrapper, Header(HeaderProps(c))),
+        <.main(layoutStyles.mainWrapper, r.render()),
+        <.footer(layoutStyles.footerWrapper, Footer())
+      )
+    )
+  }
 
   private val baseUrl = BaseUrl.fromWindowOrigin
   private val routerConfig = RouterConfigDsl[PetPages].buildConfig { dsl =>
     import dsl._
 
-    val petDetails = ???
+    val petDetails = {
+      dynamicRouteCT("#" / "pet" / string(".*").caseClass[PetDetailsPage]) ~> dynRenderR {
+        (page: PetDetailsPage, routerCtl: RouterCtl[PetPages]) =>
+          PetDetails(page.id, routerCtl)
+      }
+    }
 
     val searchPage = {
       val SearchRegex: Regex = "\\?q=(.*)".r
@@ -57,15 +82,15 @@ object Router {
         (page, router) => Search(SearchProps(page.text, router)))
     }
 
-    val home = staticRoute(root, ???) ~> render(???)
+    val home = staticRoute(root, HomePage) ~> renderR(Home(_))
 
     (
       trimSlashes
         | home
         | petDetails
         | searchPage
-    ).notFound(???)
-      .renderWith(???)
+    ).notFound(HomePage)
+      .renderWith(layout)
 
   }
 

@@ -30,7 +30,7 @@ libraryDependencies ++= Seq(
   "org.scalamock" %%% "scalamock" % "4.1.0" % Test
 )
 
-npmDevDependencies in Compile ++= Seq(
+Compile / npmDevDependencies ++= Seq(
   "ajv" -> "6.5.3",
   "clean-webpack-plugin" -> "0.1.19",
   "css-loader" -> "1.0.0",
@@ -46,33 +46,33 @@ npmDevDependencies in Compile ++= Seq(
   "jsdom" -> "12.2.0"
 )
 
-npmDependencies in Compile ++= Seq(
+Compile / npmDependencies ++= Seq(
   "react" -> "16.5.1",
   "react-dom" -> "16.5.1",
   "react-i18nify" -> "1.11.14"
 )
 
-requiresDOM in Test := true
+Test / requireJsDomEnv := true
 
 Test / emitSourceMaps := true
 
 scalaJSUseMainModuleInitializer := true
 
-version in webpack := "4.18.1"
-version in startWebpackDevServer := "3.1.8"
+webpack / version := "4.18.1"
+startWebpackDevServer / version := "3.1.8"
 
-npmResolutions in Compile := {
-  (npmDependencies in Compile).value.toMap ++ (npmDevDependencies in Compile).value.toMap
+Compile / npmResolutions  := {
+  (Compile / npmDependencies).value.toMap ++ (Compile / npmDevDependencies).value.toMap
 }
 
-webpackConfigFile in fastOptJS := Some(baseDirectory.value / "webpack-dev-config.js")
-webpackConfigFile in fullOptJS := Some(baseDirectory.value / "webpack-prod-config.js")
+fastOptJS / webpackConfigFile  := Some(baseDirectory.value / "webpack-dev-config.js")
+fullOptJS / webpackConfigFile  := Some(baseDirectory.value / "webpack-prod-config.js")
 
 webpackDevServerExtraArgs := Seq("--host", "0.0.0.0", "--hot", "--watch-content-base")
 webpackDevServerPort := 9009
 
-webpackBundlingMode in fastOptJS := BundlingMode.LibraryOnly("scalaIO")
-webpackBundlingMode in fullOptJS := BundlingMode.Application
+fastOptJS / webpackBundlingMode := BundlingMode.LibraryOnly("scalaIO")
+fullOptJS / webpackBundlingMode := BundlingMode.Application
 
 useYarn := true
 
@@ -80,21 +80,21 @@ useYarn := true
 
 val prepareAssets = taskKey[Unit]("prepareAssets")
 
-prepareAssets in ThisBuild := {
-  val npmDirectory = (npmUpdate in Compile).value
+ThisBuild / prepareAssets := {
+  val npmDirectory = (Compile / npmUpdate).value
   IO.copyDirectory(baseDirectory.value / "src" / "main" / "static", npmDirectory, overwrite = true)
   streams.value.log.info("Copy assets to working directory")
 }
 
 
-fastOptJS in Compile := {
+Compile / fastOptJS := {
   prepareAssets.value
-  (fastOptJS in Compile).value
+  (Compile / fastOptJS).value
 }
 
-fullOptJS in Compile := {
+Compile / fullOptJS := {
   prepareAssets.value
-  (fullOptJS in Compile).value
+  (Compile / fullOptJS).value
 }
 
 Test / testOptions += Tests.Argument("-oF")

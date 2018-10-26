@@ -16,17 +16,37 @@
 
 package org.make.workshop
 
-import japgolly.scalajs.react.component.Scala.Unmounted
+import org.make.workshop.facades.{I18n, translationsEnGB, translationsFrFR}
+import org.make.workshop.routes.Router
+import org.make.workshop.styles._
 import org.scalajs.dom.document
+import scalacss.DevDefaults._
+import scalacss.ScalaCssReact._
+import scalacss.internal.mutable.GlobalRegistry
+
+import scala.scalajs.js
 
 object App {
 
-  def main(args: Array[String]): Unit = {
-    val mainComponent: Unmounted[_, _, _] = ???
+  I18n.setTranslations(
+    js.Dictionary[js.Object]("en" -> translationsEnGB, "fr" -> translationsFrFR)
+  )
 
-    mainComponent.renderIntoDOM(
+  I18n.setLocale("en")
+
+  def main(args: Array[String]): Unit = {
+    GlobalRegistry.register(new BaseStyles,
+                            new LayoutStyles,
+                            new HeaderStyles,
+                            new FooterStyles,
+                            new PetListStyles,
+                            new PetTileStyles,
+                            new PetDetailsStyles,
+                            new FormStyles)
+    Router().renderIntoDOM(
       document.getElementById("app")
     )
+    GlobalRegistry.addToDocumentOnRegistration()
   }
 
 }

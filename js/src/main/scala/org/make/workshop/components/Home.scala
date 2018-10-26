@@ -16,10 +16,9 @@
 
 package org.make.workshop.components
 
-import japgolly.scalajs.react.{BackendScope, ScalaComponent}
+import japgolly.scalajs.react._
 import japgolly.scalajs.react.component.Scala.Unmounted
 import japgolly.scalajs.react.extra.router.RouterCtl
-import japgolly.scalajs.react.vdom.all.VdomElement
 import japgolly.scalajs.react.vdom.html_<^._
 import org.make.workshop.client.PetService
 import org.make.workshop.facades.Translate
@@ -30,49 +29,44 @@ import scalacss.internal.mutable.GlobalRegistry
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-object Search {
+object Home {
 
-  case class SearchProps(text: String, router: RouterCtl[PetPages])
-  case class SearchState(pets: Seq[Pet])
+  case class HomeProps(router: RouterCtl[PetPages])
+  case class HomeState(pets: Seq[Pet])
 
-  val searchStyles = GlobalRegistry[PetListStyles].get
+  val homeStyles: PetListStyles = GlobalRegistry[PetListStyles].get
 
-  class Backend(bs: BackendScope[SearchProps, SearchState]) {
-    def render(state: SearchState, props: SearchProps): VdomElement = {
-      <.section(
-        Translate("search.title",
-                  replacements = Map("text" -> props.text),
+  class Backend($ : BackendScope[HomeProps, HomeState]) {
+    def render(state: HomeState, props: HomeProps): VdomElement =
+      <.div(
+        Translate("home.message",
+                  replacements = Map("name" -> "you"),
                   tag = Some("h2")),
+        Translate("home.description", tag = Some("p")),
 //        <.ul(
-//          ^.className := searchStyles.petList.htmlClass,
+//          ^.className := homeStyles.petList.htmlClass,
 //          state.pets.toVdomArray(
 //            pet =>
-//              React.Fragment(<.li(^.className := searchStyles.petItem.htmlClass,
-//                                  PetTile(pet, props.router))))
+//              <.li(^.className := homeStyles.petItem.htmlClass,
+//                   ^.key := pet.id,
+//                   React.Fragment(PetTile(pet, props.router))))
 //        )
       )
-    }
   }
 
-  private val component = ScalaComponent
-    .builder[SearchProps]("SearchPage")
-    .initialState(SearchState(Seq.empty))
+  val component = ScalaComponent
+    .builder[HomeProps]("Home")
+    .initialState(HomeState(Seq.empty))
     .renderBackend[Backend]
-    .componentWillMount { $ =>
+    .componentDidMount { component =>
       PetService
-        .searchPets(Some($.props.text))
-        .map(pets => $.modState(_.copy(pets = pets)))
-        .toCallback
-    }
-    .componentWillReceiveProps { $ =>
-      PetService
-        .searchPets(Some($.nextProps.text))
-        .map(pets => $.modState(_.copy(pets = pets)))
+        .searchPets()
+        .map(pets => component.modState(_.copy(pets = pets)))
         .toCallback
     }
     .build
 
-  def apply(props: SearchProps): Unmounted[SearchProps, SearchState, Backend] =
-    component(props)
-
+  def apply(
+      router: RouterCtl[PetPages]): Unmounted[HomeProps, HomeState, Backend] =
+    component(HomeProps(router))
 }
