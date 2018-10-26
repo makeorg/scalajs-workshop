@@ -14,19 +14,17 @@
  * limitations under the License.
  */
 
-package org.make.workshop
+package org.make.workshop.styles
 
-import japgolly.scalajs.react.component.Scala.Unmounted
-import org.scalajs.dom.document
+import scalacss.DevDefaults._
 
-object App {
-
-  def main(args: Array[String]): Unit = {
-    val mainComponent: Unmounted[_, _, _] = ???
-
-    mainComponent.renderIntoDOM(
-      document.getElementById("app")
-    )
-  }
-
+class BaseStyles extends StyleSheet.Inline {
+  import dsl._
+  style(
+    unsafeRoot("body")(fontFamily :=! "Arial, Helvetica, sans-serif"),
+    unsafeRoot("button, a, a:hover, a:focus")(color(rgb(85, 85, 85))),
+    unsafeRoot("a:hover, a:focus")(textDecoration := "underline"),
+    unsafeRoot("button:hover, label:hover")(cursor.pointer),
+    unsafeRoot("h1")(margin(0.px, 0.px, 0.px, 0.px))
+  )
 }

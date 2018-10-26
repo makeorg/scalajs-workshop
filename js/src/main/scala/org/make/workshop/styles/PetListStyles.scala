@@ -14,19 +14,24 @@
  * limitations under the License.
  */
 
-package org.make.workshop
+package org.make.workshop.styles
 
-import japgolly.scalajs.react.component.Scala.Unmounted
-import org.scalajs.dom.document
+import scalacss.DevDefaults._
 
-object App {
+class PetListStyles extends StyleSheet.Inline {
+  import dsl._
 
-  def main(args: Array[String]): Unit = {
-    val mainComponent: Unmounted[_, _, _] = ???
+  val petList = style(
+    display.grid,
+    width(100.%%),
+    padding(0.px),
+    gridTemplateColumns := "repeat(3, 1fr)",
+    listStyle := "none"
+  )
 
-    mainComponent.renderIntoDOM(
-      document.getElementById("app")
-    )
-  }
-
+  val petItem = style(
+    width(100.%%),
+    height(100.%%),
+    padding(10.px)
+  )
 }

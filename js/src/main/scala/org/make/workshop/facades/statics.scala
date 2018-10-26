@@ -14,19 +14,22 @@
  * limitations under the License.
  */
 
-package org.make.workshop
+package org.make.workshop.facades
 
-import japgolly.scalajs.react.component.Scala.Unmounted
-import org.scalajs.dom.document
+import scala.scalajs.js
+import scala.scalajs.js.annotation.JSImport
 
-object App {
+/* TRANSLATIONS */
 
-  def main(args: Array[String]): Unit = {
-    val mainComponent: Unmounted[_, _, _] = ???
+@js.native
+@JSImport("./i18n/en_GB.json", "default")
+object translationsEnGB extends js.Object
 
-    mainComponent.renderIntoDOM(
-      document.getElementById("app")
-    )
-  }
+@js.native
+@JSImport("./i18n/fr_FR.json", "default")
+object translationsFrFR extends js.Object
 
-}
+/* IMAGES */
+@js.native
+@JSImport("./images/dog.png", "default")
+object dog extends js.Object
