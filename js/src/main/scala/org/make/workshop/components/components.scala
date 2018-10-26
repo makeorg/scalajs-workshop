@@ -16,17 +16,20 @@
 
 package org.make.workshop
 
-import japgolly.scalajs.react.component.Scala.Unmounted
-import org.scalajs.dom.document
+import japgolly.scalajs.react.{Callback, CallbackTo}
 
-object App {
+import scala.concurrent.{ExecutionContext, Future}
 
-  def main(args: Array[String]): Unit = {
-    val mainComponent: Unmounted[_, _, _] = ???
+package object components {
 
-    mainComponent.renderIntoDOM(
-      document.getElementById("app")
-    )
+  implicit class RichFutureCallback[T](val self: Future[CallbackTo[T]])
+      extends AnyVal {
+    def toCallback(implicit ec: ExecutionContext): Callback =
+      Callback.future(self)
+
+    def toCallbackTo(implicit ec: ExecutionContext): CallbackTo[Future[T]] =
+      CallbackTo.future(self)
+
   }
 
 }

@@ -16,17 +16,6 @@
 
 package org.make.workshop
 
-import japgolly.scalajs.react.component.Scala.Unmounted
-import org.scalajs.dom.document
+import org.scalatest.{FeatureSpec, GivenWhenThen, Matchers}
 
-object App {
-
-  def main(args: Array[String]): Unit = {
-    val mainComponent: Unmounted[_, _, _] = ???
-
-    mainComponent.renderIntoDOM(
-      document.getElementById("app")
-    )
-  }
-
-}
+trait UnitTest extends FeatureSpec with GivenWhenThen with Matchers

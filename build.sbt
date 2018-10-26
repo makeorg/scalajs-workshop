@@ -23,7 +23,6 @@ val sharedSettings = Seq(
     "-Yrangepos",
     "-Xlint",
     "-deprecation",
-    "-Xfatal-warnings",
     "-feature",
     "-encoding",
     "UTF-8",

@@ -14,19 +14,34 @@
  * limitations under the License.
  */
 
-package org.make.workshop
+package org.make.workshop.styles
 
-import japgolly.scalajs.react.component.Scala.Unmounted
-import org.scalajs.dom.document
+import scalacss.DevDefaults._
 
-object App {
+class FooterStyles extends StyleSheet.Inline {
+  import dsl._
 
-  def main(args: Array[String]): Unit = {
-    val mainComponent: Unmounted[_, _, _] = ???
+  val footerInner = style(
+    display.flex,
+    width(100.%%),
+    margin(0.px),
+    padding(0.px),
+    justifyContent.spaceAround,
+    alignItems.center,
+    listStyle := "none"
+  )
 
-    mainComponent.renderIntoDOM(
-      document.getElementById("app")
-    )
-  }
+  val itemLink = style(
+    fontWeight.bold,
+    textTransform.uppercase
+  )
 
+  val itemButton = style(
+    fontWeight.bold,
+    textTransform.uppercase,
+    padding(0.px),
+    backgroundColor.transparent,
+    border.none,
+    &.hover(textDecoration := "underline")
+  )
 }
